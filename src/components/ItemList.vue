@@ -1,40 +1,59 @@
 <script setup>
 import { ref } from "vue";
-const items = ref([
-  { name: "たまご", price: 100 },
-  { name: "りんご", price: 160 },
+const todoitems = ref([
+  { name: "英語第一", time: "5/19 8:50", done: false, ignore: false },
+  { name: "立志リライト", time: "5/19 23:59", done: false, ignore: false },
 ]);
 const newItemName = ref("");
-const newItemPrice = ref(0);
-
+const newItemTime = ref(0);
 const addItem = () => {
-  items.value.push({ name: newItemName.value, price: newItemPrice.value });
+  todoitems.value.push({
+    name: newItemName.value,
+    time: newItemTime.value,
+    done: false,
+    ignore: false,
+  });
 };
 </script>
 
 <template>
-  <div>Itemlist</div>
-  <div v-for="item in items" :key="item.name">
-    <div class="item" :class="{ over500: item.price >= 500 }">
-      <div class="name">名前: {{ item.name }}</div>
-      <div class="price">{{ item.price }} 円</div>
-      <div v-if="item.price >= 10000">高額商品</div>
+  <div>
+    <div>ToDolist</div>
+    <div v-for="item in todoitems" :key="item.name">
+      <div v-if="!item.ignore" class="ige">
+        <div v-if="!item.done" class="todoitem">
+          <div class="name">名前: {{ item.name }}</div>
+          <div class="time">{{ item.time }} まで</div>
+          <button @click="item.done = true">done</button>
+          <button @click="item.ignore = true">del</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <label>
+        名前
+        <input v-model="newItemName" type="text" />
+      </label>
+      <label>
+        期限
+        <input v-model="newItemTime" type="test" />
+      </label>
+      <button @click="addItem">add</button>
     </div>
   </div>
   <div>
-    <label>
-      名前
-      <input v-model="newItemName" type="text" />
-    </label>
-    <label>
-      価格
-      <input v-model="newItemPrice" type="number" />
-    </label>
-    <button @click="addItem">add</button>
+    <br />
+    <div>Donelist</div>
+    <div v-for="item in todoitems" :key="item.name">
+      <div v-if="!item.ignore" class="ige">
+        <div v-if="item.done" class="doneitem">
+          <div class="name">名前: {{ item.name }}</div>
+          <div class="time">{{ item.time }} まで</div>
+          <button @click="item.done = false">not yet</button>
+          <button @click="item.ignore = true">del</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
-<style>
-.over500 {
-  color: red;
-}
-</style>
+<style></style>
