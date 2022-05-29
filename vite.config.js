@@ -1,7 +1,16 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()]
-})
+  plugins: [vue()],
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://133.130.109.224:11300",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, "/"),
+      },
+    },
+  },
+});
